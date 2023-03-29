@@ -13,6 +13,7 @@ defmodule BonnyDependents.MixProject do
 
   def application do
     [
+      mod: {BonnyDependents.Application, [env: Mix.env()]},
       extra_applications: [:logger]
     ]
   end
