@@ -1,0 +1,4 @@
+apiVersion: test.driffaud.fr/v1alpha1
+kind: MyApp
+metadata:
+  name: app-test

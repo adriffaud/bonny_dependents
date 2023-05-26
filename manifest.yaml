@@ -1,0 +1,98 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    k8s-app: bonny
+  name: myapps.test.driffaud.fr
+spec:
+  group: test.driffaud.fr
+  names:
+    kind: MyApp
+    plural: myapps
+    shortNames: []
+    singular: myapp
+  scope: Namespaced
+  versions:
+    - additionalPrinterColumns: []
+      deprecated: false
+      deprecationWarning:
+      name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          properties:
+            status:
+              properties:
+                observedGeneration:
+                  type: integer
+              type: object
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
+      served: true
+      storage: true
+      subresources:
+        status: {}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: bonny
+  name: bonny-test
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - '*'
+  - apiGroups:
+      - events.k8s.io
+    resources:
+      - events
+    verbs:
+      - '*'
+  - apiGroups:
+      - coordination.k8s.io
+    resources:
+      - leases
+    verbs:
+      - '*'
+  - apiGroups:
+      - test.driffaud.fr
+    resources:
+      - myapps
+    verbs:
+      - '*'
+  - apiGroups:
+      - test.driffaud.fr
+    resources:
+      - myapps/status
+    verbs:
+      - '*'
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: bonny
+  name: bonny-test
+  namespace: default
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: bonny
+  name: bonny-test
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: bonny-test
+subjects:
+  - kind: ServiceAccount
+    name: bonny-test
+    namespace: default
