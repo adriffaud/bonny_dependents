@@ -1,21 +1,16 @@
 # BonnyDependents
 
-**TODO: Add description**
+Tests regarding CR dependents.
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `bonny_dependents` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:bonny_dependents, "~> 0.1.0"}
-  ]
-end
 ```
+mix deps.get
+mix bonny.gen.manifest
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/bonny_dependents>.
+k3d cluster create
+kubectl apply -f manifest.yaml
 
+iex -S mix
+kubectl apply -f test.yaml
+```
